@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kataf Atta Chakki - Owner Portal</title>
+<style>
+:root {
+  --primary:#8B4513; --primary-light:#A0522D; --accent:#DAA520; --gold:#FFD700;
+  --danger:#C0392B; --warning:#E67E22; --success:#27AE60; --dark:#2C3E50;
+  --light:#F5F5DC; --cream:#FFF8DC; --shadow:0 4px 20px rgba(0,0,0,0.15); --radius:16px;
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
+body { background:linear-gradient(135deg,#f5f5dc 0%,#e8dcc8 100%); min-height:100vh; padding-bottom:90px; }
+.app-header { background:linear-gradient(135deg,var(--primary) 0%,#5a2d0c 100%); color:white; padding:20px 16px; position:sticky; top:0; z-index:100; box-shadow:var(--shadow); text-align:center; }
+.app-header h1 { font-size:22px; font-weight:800; letter-spacing:1px; }
+.app-header p { opacity:0.9; font-size:12px; margin-top:4px; }
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; display:flex; justify-content:space-around; padding:8px 0; box-shadow:0 -4px 20px rgba(0,0,0,0.1); z-index:100; border-top:2px solid var(--accent); }
+.nav-item { flex:1; text-align:center; cursor:pointer; padding:6px 2px; color:#7f8c8d; transition:all 0.3s; border:none; background:none; font-size:11px; font-weight:600; }
+.nav-item.active { color:var(--primary); }
+.nav-item .icon { font-size:22px; display:block; margin-bottom:2px; }
+.main-content { padding:16px; max-width:600px; margin:0 auto; }
+.card { background:white; border-radius:var(--radius); padding:18px; margin-bottom:14px; box-shadow:var(--shadow); border:1px solid rgba(139,69,19,0.1); }
+.card-title { font-size:17px; font-weight:700; color:var(--primary); margin-bottom:14px; display:flex; align-items:center; gap:8px; border-bottom:2px solid var(--cream); padding-bottom:10px; }
+.alert-banner { background:linear-gradient(135deg,var(--danger) 0%,#e74c3c 100%); color:white; padding:14px 16px; border-radius:var(--radius); margin-bottom:14px; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow); cursor:pointer; }
+.alert-banner.warning { background:linear-gradient(135deg,var(--warning) 0%,#f39c12 100%); }
+.alert-count { background:white; color:var(--danger); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; flex-shrink:0; }
+.alert-banner.warning .alert-count { color:var(--warning); }
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+.stat-card { background:white; border-radius:var(--radius); padding:16px 10px; text-align:center; box-shadow:var(--shadow); border-top:4px solid var(--primary); }
+.stat-card.gold { border-top-color:var(--gold); }
+.stat-card.green { border-top-color:var(--success); }
+.stat-card.red { border-top-color:var(--danger); }
+.stat-value { font-size:26px; font-weight:800; color:var(--dark); }
+.stat-label { font-size:11px; color:#7f8c8d; margin-top:4px; font-weight:600; }
+.btn { width:100%; padding:14px; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px; letter-spacing:0.5px; }
+.btn-primary { background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%); color:white; }
+.btn-success { background:linear-gradient(135deg,var(--success) 0%,#229954 100%); color:white; }
+.btn-whatsapp { background:linear-gradient(135deg,#25d366 0%,#128c7e 100%); color:white; }
+.btn-gold { background:linear-gradient(135deg,#DAA520 0%,#FFD700 100%); color:#5a4a00; }
+.btn-danger { background:linear-gradient(135deg,var(--danger) 0%,#e74c3c 100%); color:white; }
+.btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,0,0,0.15); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+.btn-small { padding:8px 14px; font-size:12px; width:auto; display:inline-flex; margin-bottom:0; }
+.input-group { margin-bottom:14px; }
+.input-group label { display:block; font-size:13px; font-weight:700; color:var(--primary); margin-bottom:6px; }
+.input-group input { width:100%; padding:12px 14px; border:2px solid #e0d5c5; border-radius:12px; font-size:15px; transition:all 0.3s; background:var(--cream); }
+.input-group input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(139,69,19,0.1); }
+.input-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.customer-list { max-height:500px; overflow-y:auto; }
+.customer-row { display:flex; align-items:center; padding:14px; background:linear-gradient(135deg,#fff 0%,var(--cream) 100%); border-radius:14px; margin-bottom:10px; cursor:pointer; transition:all 0.3s; border:2px solid transparent; position:relative; overflow:hidden; }
+.customer-row:hover { border-color:var(--primary); transform:translateX(4px); }
+.customer-row.overdue { border-left:4px solid var(--danger); background:linear-gradient(135deg,#fff 0%,#ffeaea 100%); }
+.customer-row.warning { border-left:4px solid var(--warning); background:linear-gradient(135deg,#fff 0%,#fff5e6 100%); }
+.customer-row.free-ready { border:2px solid var(--success); background:linear-gradient(135deg,#fff 0%,#e8f8f5 100%); }
+.customer-row .days-tag { position:absolute; top:8px; right:10px; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:var(--light); color:var(--dark); }
+.customer-row.overdue .days-tag { background:var(--danger); color:white; }
+.customer-row.warning .days-tag { background:var(--warning); color:white; }
+.customer-row.free-ready .days-tag { background:var(--success); color:white; }
+.customer-avatar { width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--primary-light)); color:white; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; margin-right:12px; flex-shrink:0; border:2px solid var(--accent); }
+.customer-info { flex:1; min-width:0; }
+.customer-info h4 { font-size:15px; color:var(--dark); margin-bottom:3px; font-weight:700; }
+.customer-info p { font-size:11px; color:#7f8c8d; line-height:1.4; }
+.customer-badge { background:linear-gradient(135deg,var(--accent),var(--gold)); color:#5a4a00; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; white-space:nowrap; margin-left:8px; box-shadow:0 2px 8px rgba(218,165,32,0.3); }
+.customer-badge.free { background:linear-gradient(135deg,var(--success),#2ecc71); color:white; }
+.customer-badge.countdown { background:linear-gradient(135deg,#e74c3c,#c0392b); color:white; }
+.customer-badge.countdown-soon { background:linear-gradient(135deg,var(--warning),#f39c12); color:white; }
+.star-card-container { background:linear-gradient(135deg,var(--primary) 0%,#5a2d0c 100%); border-radius:var(--radius); padding:24px 20px; color:white; text-align:center; margin-bottom:20px; position:relative; overflow:hidden; box-shadow:var(--shadow); }
+.star-card-container::before { content:''; position:absolute; top:-50%; right:-50%; width:200%; height:200%; background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 60%); }
+.star-card-title { font-size:13px; opacity:0.8; margin-bottom:6px; position:relative; letter-spacing:2px; text-transform:uppercase; }
+.star-card-name { font-size:22px; font-weight:800; margin-bottom:18px; position:relative; }
+.stars-row { display:flex; justify-content:center; gap:12px; margin:18px 0; position:relative; }
+.star { width:48px; height:48px; border-radius:50%; border:3px solid rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center; font-size:22px; transition:all 0.5s ease; background:rgba(255,255,255,0.05); }
+.star.active { background:linear-gradient(135deg,var(--gold),var(--accent)); border-color:var(--gold); transform:scale(1.15) rotate(15deg); box-shadow:0 0 20px rgba(255,215,0,0.4); }
+.star.free-slot { background:rgba(255,255,255,0.1); border-color:var(--gold); border-style:dashed; animation:glow 1.5s infinite; }
+@keyframes glow { 0%,100% { box-shadow:0 0 5px rgba(255,215,0,0.3); } 50% { box-shadow:0 0 15px rgba(255,215,0,0.6); } }
+.progress-text { font-size:14px; margin-top:14px; position:relative; font-weight:600; }
+.free-badge { background:linear-gradient(135deg,var(--success),#2ecc71); color:white; padding:10px 20px; border-radius:25px; font-size:16px; font-weight:800; display:inline-block; margin-top:12px; box-shadow:0 4px 15px rgba(39,174,96,0.4); animation:bounce 1s infinite; }
+@keyframes bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-5px); } }
+.transaction-item { display:flex; justify-content:space-between; align-items:center; padding:14px; background:linear-gradient(135deg,#fff 0%,var(--cream) 100%); border-radius:12px; margin-bottom:8px; border-left:4px solid var(--primary); box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.transaction-item.redeem { border-left-color:var(--success); }
+.transaction-item .tx-type { font-size:11px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:1px; }
+.transaction-item.redeem .tx-type { color:var(--success); }
+.transaction-item .tx-date { font-size:10px; color:#95a5a6; margin-top:2px; }
+.transaction-item .tx-amount { font-size:14px; font-weight:700; color:var(--dark); }
+.tx-details { font-size:11px; color:#7f8c8d; margin-top:2px; }
+.modal-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:flex-end; backdrop-filter:blur(5px); }
+.modal-overlay.active { display:flex; }
+.modal-sheet { background:white; width:100%; max-width:600px; max-height:92vh; overflow-y:auto; border-radius:24px 24px 0 0; padding:24px 20px; animation:slideUp 0.35s ease; }
+@keyframes slideUp { from { transform:translateY(100%); opacity:0; } to { transform:translateY(0); opacity:1; } }
+.modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:2px solid var(--cream); padding-bottom:14px; }
+.modal-header h2 { font-size:20px; color:var(--primary); font-weight:800; }
+.close-btn { width:38px; height:38px; border-radius:50%; border:none; background:var(--cream); font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--primary); font-weight:700; }
+.search-bar { position:relative; margin-bottom:14px; }
+.search-bar input { width:100%; padding:12px 14px 12px 44px; border:2px solid #e0d5c5; border-radius:12px; font-size:15px; background:var(--cream); }
+.search-bar::before { content:'🔍'; position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; }
+.toast { position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-120px); background:var(--dark); color:white; padding:14px 24px; border-radius:14px; font-size:14px; font-weight:700; z-index:2000; transition:transform 0.4s ease; box-shadow:0 10px 30px rgba(0,0,0,0.25); text-align:center; max-width:90%; border-left:4px solid var(--accent); }
+.toast.show { transform:translateX(-50%) translateY(0); }
+.empty-state { text-align:center; padding:40px 20px; color:#95a5a6; }
+.empty-state .icon { font-size:48px; margin-bottom:12px; opacity:0.5; }
+.section { display:none; }
+.section.active { display:block; }
+.overdue-item { display:flex; align-items:center; padding:14px; background:linear-gradient(135deg,#fff 0%,#ffeaea 100%); border-radius:14px; margin-bottom:10px; border-left:4px solid var(--danger); box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.overdue-item .days-badge { background:var(--danger); color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:800; margin-right:12px; flex-shrink:0; }
+.overdue-item .od-info { flex:1; }
+.overdue-item .od-info h4 { font-size:15px; color:var(--dark); font-weight:700; }
+.overdue-item .od-info p { font-size:11px; color:#7f8c8d; margin-top:2px; }
+.summary-box { background:linear-gradient(135deg,var(--cream) 0%,#f5f5dc 100%); border-radius:12px; padding:16px; margin-bottom:16px; border:1px dashed var(--primary); }
+.summary-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e0d5c5; font-size:14px; }
+.summary-row:last-child { border-bottom:none; font-weight:700; color:var(--primary); font-size:16px; }
+.filter-tabs { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; padding-bottom:4px; }
+.filter-tab { padding:8px 16px; border-radius:20px; border:2px solid #e0d5c5; background:white; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; transition:all 0.3s; color:var(--dark); }
+.filter-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
+.redeem-history-item { display:flex; justify-content:space-between; padding:10px 14px; background:#e8f8f5; border-radius:10px; margin-bottom:6px; font-size:13px; border-left:3px solid var(--success); }
+.countdown-display { background:linear-gradient(135deg,#2c3e50 0%,#34495e 100%); color:white; border-radius:16px; padding:20px; text-align:center; margin-bottom:20px; box-shadow:var(--shadow); }
+.countdown-number { font-size:48px; font-weight:800; color:var(--gold); text-shadow:0 2px 10px rgba(0,0,0,0.3); line-height:1; }
+.countdown-label { font-size:14px; opacity:0.9; margin-top:8px; font-weight:600; }
+.countdown-sublabel { font-size:12px; opacity:0.7; margin-top:4px; }
+.free-ready-banner { background:linear-gradient(135deg,var(--success),#2ecc71); color:white; padding:16px; border-radius:var(--radius); margin-bottom:16px; text-align:center; box-shadow:var(--shadow); }
+.free-ready-banner h3 { font-size:18px; margin-bottom:6px; }
+.free-ready-banner p { font-size:13px; opacity:0.9; }
+.action-buttons { display:flex; gap:8px; margin-top:10px; }
+.action-buttons .btn { flex:1; margin-bottom:0; }
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<div class="app-header">
+  <h1>🌾 KATAF ATTA CHAKKI</h1>
+  <p>Owner Portal - Har 5 Visits = 1 FREE Pisaai</p>
+</div>
+
+<div class="main-content">
+
+<!-- HOME -->
+<div id="section-home" class="section active">
+  <div id="overdue-alert" style="display:none;">
+    <div class="alert-banner" onclick="goToOverdue()">
+      <div class="alert-count" id="overdue-count">0</div>
+      <div><div style="font-weight:700;font-size:15px;">⚠️ 15+ Din Hogaye!</div><div style="font-size:12px;opacity:0.9;">In customers ne atta piswaya nahi</div></div>
+    </div>
+  </div>
+  <div id="warning-alert" style="display:none;">
+    <div class="alert-banner warning" onclick="goToOverdue()">
+      <div class="alert-count" id="warning-count">0</div>
+      <div><div style="font-weight:700;font-size:15px;">⏰ 10-14 Din Hogaye</div><div style="font-size:12px;opacity:0.9;">Reminder bhejne ka waqt hai</div></div>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-value" id="stat-customers">0</div><div class="stat-label">Total Customers</div></div>
+    <div class="stat-card gold"><div class="stat-value" id="stat-visits">0</div><div class="stat-label">Total Visits</div></div>
+    <div class="stat-card green"><div class="stat-value" id="stat-free">0</div><div class="stat-label">Free Pisaai</div></div>
+    <div class="stat-card red"><div class="stat-value" id="stat-overdue">0</div><div class="stat-label">15+ Din Overdue</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🏆 Top Loyal Customers</div>
+    <div id="top-customers"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Aaj Ki Activity</div>
+    <div id="today-activity"></div>
+  </div>
+</div>
+
+<!-- OVERDUE -->
+<div id="section-overdue" class="section">
+  <div class="card"><div class="card-title">⏰ Overdue Customers (15+ Din)</div><div id="overdue-list"></div></div>
+  <div class="card"><div class="card-title">⚠️ Warning (10-14 Din)</div><div id="warning-list"></div></div>
+</div>
+
+<!-- CUSTOMERS -->
+<div id="section-customers" class="section">
+  <button class="btn btn-primary" onclick="openAddCustomer()"><span>➕</span> Naya Customer Register Karein</button>
+  <div class="search-bar"><input type="text" id="searchInput" placeholder="Name ya number se search..." oninput="renderCustomers()"></div>
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="setFilter('all',this)">Sab</button>
+    <button class="filter-tab" onclick="setFilter('overdue',this)">15+ Din</button>
+    <button class="filter-tab" onclick="setFilter('free',this)">Free Ready</button>
+    <button class="filter-tab" onclick="setFilter('recent',this)">Recent</button>
+  </div>
+  <div id="customers-list" class="customer-list"></div>
+</div>
+
+<!-- TRANSACTIONS -->
+<div id="section-transactions" class="section">
+  <div class="card"><div class="card-title">📜 Sab Transactions</div><div id="all-transactions"></div></div>
+</div>
+
+<!-- SETTINGS -->
+<div id="section-settings" class="section">
+  <div class="card">
+    <div class="card-title">⚙️ Program Settings</div>
+    <div class="input-group"><label>Kitne Visits pe 1 Free Pisaai?</label><input type="number" id="setting-visits" value="5" min="1"></div>
+    <div class="input-group"><label>Shop Name</label><input type="text" id="setting-shop" value="Kataf Atta Chakki"></div>
+    <div class="input-group"><label>Shop Phone / WhatsApp</label><input type="text" id="setting-phone" value="03001234567"></div>
+    <button class="btn btn-success" onclick="saveSettings()">💾 Save Settings</button>
+  </div>
+  <div class="card">
+    <div class="card-title">📤 Data Export</div>
+    <button class="btn btn-primary" onclick="exportCustomers()">👥 Customers Export</button>
+    <button class="btn btn-primary" onclick="exportTransactions()" style="margin-top:8px;">📋 Transactions Export</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🗑️ Danger Zone</div>
+    <button class="btn btn-danger" onclick="clearAllData()">⚠️ Sab Data Delete</button>
+  </div>
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item active" data-section="home"><span class="icon">🏠</span><span>Home</span></button>
+  <button class="nav-item" data-section="customers"><span class="icon">👥</span><span>Customers</span></button>
+  <button class="nav-item" data-section="transactions"><span class="icon">📋</span><span>History</span></button>
+  <button class="nav-item" data-section="settings"><span class="icon">⚙️</span><span>Settings</span></button>
+</div>
+
+<!-- ADD CUSTOMER MODAL -->
+<div id="modal-add" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add')">
+  <div class="modal-sheet">
+    <div class="modal-header"><h2>➕ Naya Customer</h2><button class="close-btn" onclick="closeModal('modal-add')">&times;</button></div>
+    <div class="input-group"><label>Customer ka Full Name *</label><input type="text" id="new-name" placeholder="e.g. Muhammad Ahmed"></div>
+    <div class="input-group"><label>WhatsApp Number *</label><input type="tel" id="new-phone" placeholder="03001234567 (92 nahi lagana)"></div>
+    <div class="input-group"><label>Area / Address</label><input type="text" id="new-address" placeholder="e.g. Block A, Street 4"></div>
+    <button class="btn btn-primary" onclick="addCustomer()">Customer Register Karein</button>
+  </div>
+</div>
+
+<!-- CUSTOMER DETAIL MODAL -->
+<div id="modal-detail" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-detail')">
+  <div class="modal-sheet">
+    <div class="modal-header"><h2 id="detail-name">Customer</h2><button class="close-btn" onclick="closeModal('modal-detail')">&times;</button></div>
+
+    <!-- FREE READY BANNER -->
+    <div id="free-ready-banner" style="display:none;">
+      <div class="free-ready-banner">
+        <h3>🎉 MUBARAK! 1 FREE PISAAI READY!</h3>
+        <p>Customer ke 5 visits complete ho gaye hain. Ab FREE pisaai redeem karein!</p>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-display" id="countdown-box">
+      <div class="countdown-number" id="countdown-num">5</div>
+      <div class="countdown-label" id="countdown-label">visits baqi hain</div>
+      <div class="countdown-sublabel" id="countdown-sublabel">1 FREE Pisaai ke liye</div>
+    </div>
+
+    <!-- STAR CARD -->
+    <div class="star-card-container" id="star-card">
+      <div class="star-card-title">⭐ LOYALTY CARD</div>
+      <div class="star-card-name" id="card-name">Name</div>
+      <div class="stars-row" id="stars-row"></div>
+      <div class="progress-text" id="progress-text"></div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-box">
+      <div class="summary-row"><span>📱 WhatsApp:</span><span id="detail-phone" style="font-weight:700;"></span></div>
+      <div class="summary-row"><span>📍 Address:</span><span id="detail-address"></span></div>
+      <div class="summary-row"><span>📅 Last Visit:</span><span id="detail-lastvisit"></span></div>
+      <div class="summary-row"><span>⏰ Days Ago:</span><span id="detail-daysago" style="font-weight:800;color:var(--primary);"></span></div>
+      <div class="summary-row"><span>🌾 Total Ghandham:</span><span id="detail-ghandham"></span></div>
+      <div class="summary-row"><span>🥡 Total Pisaai:</span><span id="detail-pisaai"></span></div>
+      <div class="summary-row"><span>⭐ Total Visits:</span><span id="detail-visits"></span></div>
+      <div class="summary-row"><span>🎁 Free Pisaai Redeemed:</span><span id="detail-redeemed"></span></div>
+    </div>
+
+    <!-- ADD VISIT -->
+    <div class="card" style="padding:16px;">
+      <div class="card-title" style="font-size:15px;">📝 Nayi Visit Add Karein</div>
+      <div class="input-row">
+        <div class="input-group"><label>Ghandham (kg)</label><input type="number" id="visit-ghandham" placeholder="e.g. 20" min="0" step="0.5"></div>
+        <div class="input-group"><label>Pisaai (kg)</label><input type="number" id="visit-pisaai" placeholder="e.g. 18" min="0" step="0.5"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addVisit()">✅ Visit Add Karein & Star Milega</button>
+    </div>
+
+    <!-- REDEEM FREE -->
+    <div class="card" id="redeem-section" style="padding:16px; background:linear-gradient(135deg,#e8f8f5 0%,#fff 100%); border:2px dashed var(--success);">
+      <div class="card-title" style="font-size:15px; color:var(--success);">🎁 FREE Pisaai Redeem Karein</div>
+      <p style="font-size:13px; color:#666; margin-bottom:12px;">Jab customer ke 5 stars complete honge, yahan se FREE pisaai redeem karein</p>
+      <div class="input-row">
+        <div class="input-group"><label>Ghandham (kg)</label><input type="number" id="free-ghandham" placeholder="e.g. 20" min="0" step="0.5"></div>
+        <div class="input-group"><label>Pisaai (kg)</label><input type="number" id="free-pisaai" placeholder="e.g. 18" min="0" step="0.5"></div>
+      </div>
+      <button class="btn btn-success" id="btn-redeem" onclick="redeemFree()">🎁 FREE Pisaai Redeem</button>
+    </div>
+
+    <!-- WHATSAPP ACTIONS -->
+    <div style="margin-top:16px;">
+      <button class="btn btn-whatsapp" onclick="sendWhatsAppUpdate()">📱 Status Update Bhejein</button>
+      <button class="btn btn-whatsapp" onclick="sendWhatsAppReminder()" style="margin-top:8px;">⏰ Reminder Message Bhejein</button>
+      <button class="btn btn-gold" onclick="sendWhatsAppReceipt()" style="margin-top:8px;">🧾 Last Visit Receipt Bhejein</button>
+    </div>
+
+    <!-- RECENT VISITS -->
+    <div style="margin-top:24px;">
+      <div class="card-title">📝 Recent Visits</div>
+      <div id="detail-transactions"></div>
+    </div>
+
+    <!-- REDEEM HISTORY -->
+    <div style="margin-top:16px;">
+      <div class="card-title">🎁 Free Pisaai History</div>
+      <div id="redeem-history"></div>
+    </div>
+
+    <button class="btn btn-danger" style="margin-top:20px;" onclick="deleteCustomer()">🗑️ Customer Delete Karein</button>
+  </div>
+</div>
+
+<script>
+
+// ===================== DATA =====================
+let appData = JSON.parse(localStorage.getItem('katafData')) || {
+  customers: [],
+  transactions: [],
+  settings: { visitsForFree: 5, shopName: 'Kataf Atta Chakki', shopPhone: '03001234567' },
+  nextId: 1001
+};
+let currentCustomerId = null;
+let currentFilter = 'all';
+
+function saveData() { localStorage.setItem('katafData', JSON.stringify(appData)); }
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+// ===================== NAVIGATION =====================
+function switchSection(section) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-' + section).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    if(btn.getAttribute('data-section') === section) btn.classList.add('active');
+  });
+  if(section === 'home') renderDashboard();
+  if(section === 'customers') renderCustomers();
+  if(section === 'transactions') renderAllTransactions();
+  if(section === 'settings') loadSettings();
+  if(section === 'overdue') renderOverdue();
+}
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', function() { switchSection(this.getAttribute('data-section')); });
+});
+
+function goToOverdue() { switchSection('overdue'); }
+
+// ===================== HELPERS =====================
+function getDaysSince(dateStr) {
+  if(!dateStr) return 999;
+  return Math.floor((new Date() - new Date(dateStr)) / (1000 * 60 * 60 * 24));
+}
+
+function formatDate(dateStr) {
+  if(!dateStr) return 'N/A';
+  return new Date(dateStr).toLocaleDateString('ur-PK', {year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+}
+
+function getRemaining(stars, target) { return Math.max(0, target - (stars || 0)); }
+
+function getCountdownText(remaining) {
+  if(remaining === 5) return "Abhi shuruwat hai";
+  if(remaining === 4) return "Bas 4 visits baqi!";
+  if(remaining === 3) return "3 visits aur, FREE qareeb!";
+  if(remaining === 2) return "Sirf 2 visits baqi!";
+  if(remaining === 1) return "Sirf 1 visit! FREE pisaai qareeb hai!";
+  return "FREE Pisaai READY!";
+}
+
+// ===================== DASHBOARD =====================
+function renderDashboard() {
+  const customers = appData.customers;
+  const transactions = appData.transactions;
+  let overdueCount = 0, warningCount = 0;
+  customers.forEach(c => {
+    const days = getDaysSince(c.lastVisit);
+    if(days >= 15) overdueCount++;
+    else if(days >= 10) warningCount++;
+  });
+
+  document.getElementById('stat-customers').textContent = customers.length;
+  document.getElementById('stat-visits').textContent = transactions.filter(t => t.type === 'visit').length;
+  document.getElementById('stat-free').textContent = transactions.filter(t => t.type === 'redeem').length;
+  document.getElementById('stat-overdue').textContent = overdueCount;
+
+  const odAlert = document.getElementById('overdue-alert');
+  odAlert.style.display = overdueCount > 0 ? 'block' : 'none';
+  if(overdueCount > 0) document.getElementById('overdue-count').textContent = overdueCount;
+
+  const warnAlert = document.getElementById('warning-alert');
+  warnAlert.style.display = warningCount > 0 ? 'block' : 'none';
+  if(warningCount > 0) document.getElementById('warning-count').textContent = warningCount;
+
+  const topCustomers = [...customers].sort((a, b) => (b.totalVisits || 0) - (a.totalVisits || 0)).slice(0, 5);
+  const topList = document.getElementById('top-customers');
+  if(topCustomers.length === 0) {
+    topList.innerHTML = '<div class="empty-state"><div class="icon">👥</div>Koi customer nahi</div>';
+  } else {
+    topList.innerHTML = topCustomers.map((c, i) => {
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '⭐';
+      const remaining = getRemaining(c.stars, appData.settings.visitsForFree);
+      const freeReady = remaining === 0;
+      return '<div class="customer-row" onclick="openCustomerDetail(' + c.id + ')">' +
+        '<div class="customer-avatar">' + medal + '</div>' +
+        '<div class="customer-info"><h4>' + c.name + '</h4><p>' + (c.totalVisits || 0) + ' visits • ' + (c.totalGhandham || 0) + 'kg ghandham</p></div>' +
+        '<div class="customer-badge ' + (freeReady ? 'free' : remaining <= 2 ? 'countdown-soon' : remaining <= 3 ? 'countdown' : '') + '">' +
+        (freeReady ? 'FREE!' : remaining + ' baqi') + '</div></div>';
+    }).join('');
+  }
+
+  const today = new Date().toDateString();
+  const todayTx = transactions.filter(t => new Date(t.timestamp).toDateString() === today);
+  const activityEl = document.getElementById('today-activity');
+  if(todayTx.length === 0) {
+    activityEl.innerHTML = '<div class="empty-state"><div class="icon">📅</div>Aaj koi visit nahi</div>';
+  } else {
+    activityEl.innerHTML = todayTx.slice(-5).reverse().map(t => {
+      return '<div class="transaction-item ' + (t.type === 'redeem' ? 'redeem' : '') + '">' +
+        '<div><div style="font-weight:700;font-size:14px;">' + t.customerName + '</div>' +
+        '<div class="tx-type">' + (t.type === 'visit' ? '🌾 Visit' : '🎁 Free Pisaai') + '</div>' +
+        '<div class="tx-details">' + t.ghandham + 'kg ghandham → ' + t.pisaai + 'kg pisaai</div>' +
+        '<div class="tx-date">' + new Date(t.timestamp).toLocaleTimeString('ur-PK', {hour:'2-digit', minute:'2-digit'}) + '</div></div>' +
+        '<div style="text-align:right"><div class="tx-amount">' + (t.type === 'visit' ? '⭐ +' + (t.starsAdded || 1) : '🎁 FREE') + '</div>' +
+        (t.freeEarned ? '<div style="font-size:11px;color:var(--success);font-weight:700;">Card Complete!</div>' : '') + '</div></div>';
+    }).join('');
+  }
+}
+
+// ===================== OVERDUE =====================
+function renderOverdue() {
+  const customers = appData.customers;
+  const overdue = customers.filter(c => getDaysSince(c.lastVisit) >= 15)
+    .sort((a, b) => getDaysSince(b.lastVisit) - getDaysSince(a.lastVisit));
+  const odList = document.getElementById('overdue-list');
+  if(overdue.length === 0) {
+    odList.innerHTML = '<div class="empty-state">Koi overdue customer nahi 🎉</div>';
+  } else {
+    odList.innerHTML = overdue.map(c => {
+      const days = getDaysSince(c.lastVisit);
+      const remaining = getRemaining(c.stars, appData.settings.visitsForFree);
+      return '<div class="overdue-item"><div class="days-badge">' + days + ' DIN</div>' +
+        '<div class="od-info"><h4>' + c.name + '</h4><p>📱 ' + c.phone + ' • Last: ' + formatDate(c.lastVisit) +
+        ' • ' + (remaining === 0 ? 'FREE ready!' : remaining + ' visits baqi') + '</p></div>' +
+        '<button class="btn btn-whatsapp btn-small" onclick="sendOverdueWhatsApp(' + c.id + ');event.stopPropagation();">📱 Msg</button></div>';
+    }).join('');
+  }
+
+  const warning = customers.filter(c => { const d = getDaysSince(c.lastVisit); return d >= 10 && d < 15; })
+    .sort((a, b) => getDaysSince(b.lastVisit) - getDaysSince(a.lastVisit));
+  const warnList = document.getElementById('warning-list');
+  if(warning.length === 0) {
+    warnList.innerHTML = '<div class="empty-state">Koi warning customer nahi</div>';
+  } else {
+    warnList.innerHTML = warning.map(c => {
+      const days = getDaysSince(c.lastVisit);
+      const remaining = getRemaining(c.stars, appData.settings.visitsForFree);
+      return '<div class="overdue-item" style="border-left-color:var(--warning);background:linear-gradient(135deg,#fff 0%,#fff5e6 100%);">' +
+        '<div class="days-badge" style="background:var(--warning);">' + days + ' DIN</div>' +
+        '<div class="od-info"><h4>' + c.name + '</h4><p>📱 ' + c.phone + ' • Last: ' + formatDate(c.lastVisit) +
+        ' • ' + (remaining === 0 ? 'FREE ready!' : remaining + ' visits baqi') + '</p></div>' +
+        '<button class="btn btn-whatsapp btn-small" onclick="sendReminderWhatsApp(' + c.id + ');event.stopPropagation();">📱 Reminder</button></div>';
+    }).join('');
+  }
+}
+
+// ===================== CUSTOMERS =====================
+function openAddCustomer() {
+  document.getElementById('new-name').value = '';
+  document.getElementById('new-phone').value = '';
+  document.getElementById('new-address').value = '';
+  document.getElementById('modal-add').classList.add('active');
+}
+
+function addCustomer() {
+  const name = document.getElementById('new-name').value.trim();
+  const phone = document.getElementById('new-phone').value.trim().replace(/\D/g, '');
+  const address = document.getElementById('new-address').value.trim();
+  if(!name || !phone) { showToast('❌ Name aur WhatsApp number zaroori hain!'); return; }
+  if(phone.length < 10) { showToast('❌ Valid phone number enter karein!'); return; }
+  if(appData.customers.find(c => c.phone === phone)) { showToast('❌ Ye number pehle se registered hai!'); return; }
+
+  const customer = {
+    id: appData.nextId++, name: name, phone: phone, address: address,
+    stars: 0, totalVisits: 0, totalGhandham: 0, totalPisaai: 0, freeRedeemed: 0,
+    lastVisit: null, createdAt: new Date().toISOString()
+  };
+  appData.customers.push(customer);
+  saveData();
+  closeModal('modal-add');
+  showToast('✅ Customer successfully registered!');
+  renderCustomers();
+  setTimeout(() => sendWelcomeWhatsApp(customer), 500);
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderCustomers();
+}
+
+function renderCustomers() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  let filtered = appData.customers.filter(c => c.name.toLowerCase().includes(search) || c.phone.includes(search));
+  if(currentFilter === 'overdue') filtered = filtered.filter(c => getDaysSince(c.lastVisit) >= 15);
+  else if(currentFilter === 'free') filtered = filtered.filter(c => getRemaining(c.stars, appData.settings.visitsForFree) === 0);
+  else if(currentFilter === 'recent') filtered = filtered.filter(c => getDaysSince(c.lastVisit) <= 3);
+
+  filtered.sort((a, b) => {
+    const aDays = getDaysSince(a.lastVisit), bDays = getDaysSince(b.lastVisit);
+    if(aDays >= 15 && bDays < 15) return -1;
+    if(bDays >= 15 && aDays < 15) return 1;
+    return bDays - aDays;
+  });
+
+  const list = document.getElementById('customers-list');
+  if(filtered.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div class="icon">🔍</div>Koi customer nahi mila</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(c => {
+    const initial = c.name.charAt(0).toUpperCase();
+    const days = getDaysSince(c.lastVisit);
+    const remaining = getRemaining(c.stars, appData.settings.visitsForFree);
+    const freeReady = remaining === 0;
+    let rowClass = '';
+    if(freeReady) rowClass = 'free-ready';
+    else if(days >= 15) rowClass = 'overdue';
+    else if(days >= 10) rowClass = 'warning';
+
+    let badgeClass = '', badgeText = '';
+    if(freeReady) { badgeClass = 'free'; badgeText = 'FREE!'; }
+    else if(remaining <= 1) { badgeClass = 'countdown-soon'; badgeText = remaining + ' baqi!'; }
+    else if(remaining <= 3) { badgeClass = 'countdown'; badgeText = remaining + ' baqi'; }
+    else badgeText = remaining + ' baqi';
+
+    const daysText = days === 999 ? 'NEW' : days + ' din';
+    const daysLabel = days === 999 ? 'Abhi register hua' : days + ' din pehle aaye';
+
+    return '<div class="customer-row ' + rowClass + '" onclick="openCustomerDetail(' + c.id + ')">' +
+      '<div class="days-tag">' + daysText + '</div>' +
+      '<div class="customer-avatar">' + initial + '</div>' +
+      '<div class="customer-info"><h4>' + c.name + '</h4><p>📱 ' + c.phone + ' • ' + daysLabel + ' • ' + (c.totalVisits || 0) + ' visits</p></div>' +
+      '<div class="customer-badge ' + badgeClass + '">' + badgeText + '</div></div>';
+  }).join('');
+}
+
+// ===================== CUSTOMER DETAIL =====================
+function openCustomerDetail(id) {
+  currentCustomerId = id;
+  const c = appData.customers.find(x => x.id === id);
+  if(!c) return;
+  const target = appData.settings.visitsForFree;
+  const stars = c.stars || 0;
+  const remaining = getRemaining(stars, target);
+  const freeReady = remaining === 0;
+
+  document.getElementById('detail-name').textContent = c.name;
+  document.getElementById('card-name').textContent = c.name;
+  document.getElementById('detail-phone').textContent = c.phone;
+  document.getElementById('detail-address').textContent = c.address || 'N/A';
+  document.getElementById('detail-lastvisit').textContent = formatDate(c.lastVisit);
+
+  const days = getDaysSince(c.lastVisit);
+  const daysEl = document.getElementById('detail-daysago');
+  daysEl.textContent = days === 999 ? 'Kabhi nahi aaye' : days + ' din pehle';
+  daysEl.style.color = days >= 15 ? 'var(--danger)' : days >= 10 ? 'var(--warning)' : 'var(--primary)';
+
+  document.getElementById('detail-ghandham').textContent = (c.totalGhandham || 0) + ' kg';
+  document.getElementById('detail-pisaai').textContent = (c.totalPisaai || 0) + ' kg';
+  document.getElementById('detail-visits').textContent = (c.totalVisits || 0);
+  document.getElementById('detail-redeemed').textContent = (c.freeRedeemed || 0);
+
+  // Show/hide FREE READY banner
+  const freeBanner = document.getElementById('free-ready-banner');
+  if(freeReady) {
+    freeBanner.style.display = 'block';
+  } else {
+    freeBanner.style.display = 'none';
+  }
+
+  // Countdown display
+  const countdownBox = document.getElementById('countdown-box');
+  const countdownNum = document.getElementById('countdown-num');
+  const countdownLabel = document.getElementById('countdown-label');
+  const countdownSublabel = document.getElementById('countdown-sublabel');
+
+  if(freeReady) {
+    countdownNum.textContent = '✅';
+    countdownNum.style.fontSize = '36px';
+    countdownLabel.textContent = 'FREE Pisaai READY!';
+    countdownSublabel.textContent = 'Ab redeem karein';
+    countdownBox.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+  } else {
+    countdownNum.textContent = remaining;
+    countdownNum.style.fontSize = '48px';
+    countdownLabel.textContent = 'visits baqi hain';
+    countdownSublabel.textContent = '1 FREE Pisaai ke liye';
+    countdownBox.style.background = 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)';
+  }
+
+  // Star Card
+  const starsRow = document.getElementById('stars-row');
+  let starsHtml = '';
+  for(let i = 0; i < target; i++) {
+    if(i < stars) starsHtml += '<div class="star active">⭐</div>';
+    else starsHtml += '<div class="star">○</div>';
+  }
+  starsRow.innerHTML = starsHtml;
+
+  const progressEl = document.getElementById('progress-text');
+  if(freeReady) {
+    progressEl.textContent = '🎉 Mubarak! 1 FREE Pisaai redeem karne ke liye ready!';
+  } else {
+    progressEl.textContent = getCountdownText(remaining);
+  }
+
+  // Reset inputs
+  document.getElementById('visit-ghandham').value = '';
+  document.getElementById('visit-pisaai').value = '';
+  document.getElementById('free-ghandham').value = '';
+  document.getElementById('free-pisaai').value = '';
+
+  // Redeem button state
+  const redeemBtn = document.getElementById('btn-redeem');
+  const redeemSection = document.getElementById('redeem-section');
+  if(freeReady) {
+    redeemBtn.disabled = false;
+    redeemBtn.textContent = '🎁 FREE Pisaai Redeem';
+    redeemBtn.style.opacity = '1';
+    redeemSection.style.border = '2px dashed var(--success)';
+    redeemSection.style.background = 'linear-gradient(135deg, #e8f8f5 0%, #fff 100%)';
+  } else {
+    redeemBtn.disabled = true;
+    redeemBtn.textContent = '⭐ ' + remaining + ' aur visits chahiye';
+    redeemBtn.style.opacity = '0.5';
+    redeemSection.style.border = '2px dashed #ccc';
+    redeemSection.style.background = '#f5f5f5';
+  }
+
+  renderDetailTransactions(c.id);
+  renderRedeemHistory(c.id);
+  document.getElementById('modal-detail').classList.add('active');
+}
+
+function renderDetailTransactions(customerId) {
+  const trans = appData.transactions.filter(t => t.customerId === customerId && t.type === 'visit').reverse().slice(0, 10);
+  const container = document.getElementById('detail-transactions');
+  if(trans.length === 0) {
+    container.innerHTML = '<div class="empty-state" style="padding:16px;">Koi visit nahi</div>';
+    return;
+  }
+  container.innerHTML = trans.map(t => {
+    return '<div class="transaction-item"><div><div class="tx-type">🌾 VISIT</div>' +
+      '<div class="tx-date">' + formatDate(t.timestamp) + '</div>' +
+      '<div class="tx-details">' + t.ghandham + 'kg ghandham → ' + t.pisaai + 'kg pisaai</div></div>' +
+      '<div style="text-align:right"><div class="tx-amount">⭐ +' + (t.starsAdded || 1) + ' Star</div>' +
+      '<div class="tx-date">' + (t.freeEarned ? '🎁 Free earned!' : '') + '</div></div></div>';
+  }).join('');
+}
+
+function renderRedeemHistory(customerId) {
+  const trans = appData.transactions.filter(t => t.customerId === customerId && t.type === 'redeem').reverse();
+  const container = document.getElementById('redeem-history');
+  if(trans.length === 0) {
+    container.innerHTML = '<div class="empty-state" style="padding:16px;">Koi free pisaai redeem nahi hui</div>';
+    return;
+  }
+  container.innerHTML = trans.map((t, i) => {
+    return '<div class="redeem-history-item"><span><strong>#' + (i+1) + '</strong> ' + formatDate(t.timestamp) + '</span>' +
+      '<span>' + t.ghandham + 'kg ghandham → ' + t.pisaai + 'kg pisaai 🎁</span></div>';
+  }).join('');
+}
+
+// ===================== ADD VISIT =====================
+function addVisit() {
+  const ghandham = parseFloat(document.getElementById('visit-ghandham').value) || 0;
+  const pisaai = parseFloat(document.getElementById('visit-pisaai').value) || 0;
+  if(ghandham <= 0) { showToast('❌ Ghandham ka weight dalen!'); return; }
+
+  const c = appData.customers.find(x => x.id === currentCustomerId);
+  const settings = appData.settings;
+
+  // Add star
+  c.stars = (c.stars || 0) + 1;
+  c.totalVisits = (c.totalVisits || 0) + 1;
+  c.totalGhandham = (c.totalGhandham || 0) + ghandham;
+  c.totalPisaai = (c.totalPisaai || 0) + pisaai;
+  c.lastVisit = new Date().toISOString();
+
+  // Check if free earned
+  const freeEarned = c.stars >= settings.visitsForFree;
+  let starsAdded = 1;
+
+  if(freeEarned) {
+    // IMPORTANT: Don't reset stars here! Keep them at 5 so customer can redeem
+    // Stars will reset AFTER redemption
+    starsAdded = settings.visitsForFree;
+  }
+
+  const tx = {
+    id: Date.now(), customerId: c.id, customerName: c.name, type: 'visit',
+    ghandham: ghandham, pisaai: pisaai, starsAdded: starsAdded,
+    freeEarned: freeEarned, timestamp: new Date().toISOString()
+  };
+  appData.transactions.push(tx);
+  saveData();
+
+  if(freeEarned) {
+    showToast('🎉 Mubarak! ' + c.name + ' ke ' + settings.visitsForFree + ' stars complete! Ab FREE Pisaai redeem karein!');
+  } else {
+    showToast('✅ Visit add! ' + getRemaining(c.stars, settings.visitsForFree) + ' visits baqi hain!');
+  }
+
+  openCustomerDetail(c.id);
+  setTimeout(() => sendVisitWhatsApp(c, ghandham, pisaai, freeEarned), 600);
+}
+
+// ===================== REDEEM FREE - FIXED =====================
+function redeemFree() {
+  const ghandham = parseFloat(document.getElementById('free-ghandham').value) || 0;
+  const pisaai = parseFloat(document.getElementById('free-pisaai').value) || 0;
+  if(ghandham <= 0) { showToast('❌ Ghandham ka weight dalen!'); return; }
+
+  const c = appData.customers.find(x => x.id === currentCustomerId);
+  const target = appData.settings.visitsForFree;
+
+  // Check if customer has enough stars
+  if((c.stars || 0) < target) {
+    showToast('❌ Customer ke ' + target + ' stars complete nahi hue!');
+    return;
+  }
+
+  // Deduct stars and add free redeemed
+  c.stars = 0; // Reset stars after redemption
+  c.freeRedeemed = (c.freeRedeemed || 0) + 1;
+  c.totalGhandham = (c.totalGhandham || 0) + ghandham;
+  c.totalPisaai = (c.totalPisaai || 0) + pisaai;
+  c.lastVisit = new Date().toISOString();
+
+  const tx = {
+    id: Date.now(), customerId: c.id, customerName: c.name, type: 'redeem',
+    ghandham: ghandham, pisaai: pisaai, starsAdded: 0,
+    freeEarned: false, timestamp: new Date().toISOString()
+  };
+  appData.transactions.push(tx);
+  saveData();
+
+  showToast('🎁 ' + c.name + ' ne 1 FREE Pisaai redeem kar li! Naya card shuru!');
+  openCustomerDetail(c.id);
+  setTimeout(() => sendRedeemWhatsApp(c, ghandham, pisaai), 600);
+}
+
+// ===================== WHATSAPP - FIXED =====================
+function getWhatsAppLink(phone, message) {
+  let cleanPhone = phone.replace(/\D/g, '');
+  if(!cleanPhone.startsWith('92')) cleanPhone = '92' + cleanPhone;
+  return 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(message);
+}
+
+function sendWelcomeWhatsApp(customer) {
+  const shop = appData.settings.shopName;
+  const target = appData.settings.visitsForFree;
+  const msg = 'Assalam-o-Alaikum ' + customer.name + '!\n\n' +
+    'Aapka *Digital Loyalty Card* Kataf Atta Chakki mein ban gaya hai! 🎉\n\n' +
+    '*Hamara Offer:*\n' +
+    '• Har *' + target + ' dafa* visit pe *1 dafa FREE Pisaai*!\n' +
+    '• Aapka ID: *' + customer.id + '*\n\n' +
+    'Ab jab bhi aap ghandham pisanay aayein ge, aapka hisaab hamare system mein update ho jaye ga!\n\n' +
+    'Aapka bharosa, hamari pehchaan!\n' +
+    '🌾 ' + shop;
+  window.open(getWhatsAppLink(customer.phone, msg), '_blank');
+}
+
+function sendVisitWhatsApp(c, ghandham, pisaai, freeEarned) {
+  const shop = appData.settings.shopName;
+  const target = appData.settings.visitsForFree;
+  const stars = c.stars || 0;
+  const remaining = getRemaining(stars, target);
+  let msg = 'Assalam-o-Alaikum ' + c.name + '!\n\n' +
+    '*Aaj ki Visit:*\n' +
+    '🌾 Ghandham: *' + ghandham + ' kg*\n' +
+    '🥡 Pisaai: *' + pisaai + ' kg*\n' +
+    '⭐ Star Earned: *+1*\n\n';
+
+  if(freeEarned) {
+    msg += '*🎉 MUBARAK!*\n' +
+      'Aapke *' + target + ' stars* complete ho gaye!\n' +
+      'Aapko *1 FREE Pisaai* milne ka haqdar ban gaye hain!\n\n' +
+      'Agli visit pe FREE pisaai redeem karein!\n\n';
+  } else {
+    msg += '*Abhi sirf ' + remaining + ' visits baqi hain!* ⏳\n' +
+      (target - remaining) + ' star collect ho gaye hain.\n' +
+      'Bas *' + remaining + ' visit* aur karne hain!\n' +
+      '*1 FREE Pisaai* aapka intezar kar raha hai! 🎁\n\n';
+  }
+
+  msg += '*Total Hisaab:*\n' +
+    'Total Visits: ' + c.totalVisits + '\n' +
+    'Total Ghandham: ' + c.totalGhandham + 'kg\n' +
+    'Total Pisaai: ' + c.totalPisaai + 'kg\n' +
+    'Free Redeemed: ' + (c.freeRedeemed || 0) + '\n\n' +
+    'Shukriya! 🙏\n' + shop;
+  window.open(getWhatsAppLink(c.phone, msg), '_blank');
+}
+
+function sendRedeemWhatsApp(c, ghandham, pisaai) {
+  const shop = appData.settings.shopName;
+  const target = appData.settings.visitsForFree;
+  const msg = 'Assalam-o-Alaikum ' + c.name + '!\n\n' +
+    '*🎁 Aapne FREE Pisaai Redeem kar li!*\n\n' +
+    '🌾 Ghandham: *' + ghandham + ' kg*\n' +
+    '🥡 Pisaai: *' + pisaai + ' kg*\n' +
+    '💰 Cost: *FREE (Rs 0)*\n\n' +
+    'Ye aapke *' + target + ' visits* ka inaam tha!\n' +
+    'Ab naya star card shuru!\n' +
+    '*Ab phir se ' + target + ' visits pe 1 FREE!* 🎉\n\n' +
+    '*Total Hisaab:*\n' +
+    'Total Visits: ' + c.totalVisits + '\n' +
+    'Free Pisaai: ' + c.freeRedeemed + '\n\n' +
+    'Shukriya! 🙏\n' + shop;
+  window.open(getWhatsAppLink(c.phone, msg), '_blank');
+}
+
+function sendWhatsAppUpdate() {
+  const c = appData.customers.find(x => x.id === currentCustomerId);
+  if(!c) return;
+  const shop = appData.settings.shopName;
+  const target = appData.settings.visitsForFree;
+  const stars = c.stars || 0;
+  const remaining = getRemaining(stars, target);
+  const freeReady = remaining === 0;
+
+  let msg = 'Assalam-o-Alaikum ' + c.name + '!\n\n' +
+    '*Aapka Current Hisaab:*\n\n';
+  if(freeReady) {
+    msg += '🎁 *1 FREE Pisaai READY!*\n' +
+      'Abhi aayein aur redeem karein!\n\n';
+  } else {
+    msg += '⭐ Stars Collected: *' + (target - remaining) + '/' + target + '*\n' +
+      '⏳ *' + remaining + ' visits baqi hain!*\n' +
+      'Bas *' + remaining + ' visit* aur!\n' +
+      '*1 FREE Pisaai* qareeb hai! 🎁\n\n';
+  }
+  msg += '🌾 Total Ghandham: *' + (c.totalGhandham || 0) + 'kg*\n' +
+    '🥡 Total Pisaai: *' + (c.totalPisaai || 0) + 'kg*\n' +
+    '📊 Total Visits: *' + (c.totalVisits || 0) + '*\n' +
+    '🎁 Free Redeemed: *' + (c.freeRedeemed || 0) + '*\n\n' +
+    'Shukriya! 🙏\n' + shop;
+  window.open(getWhatsAppLink(c.phone, msg), '_blank');
+}
+
+function sendWhatsAppReminder() {
+  const c = appData.customers.find(x => x.id === currentCustomerId);
+  if(!c) return;
+  const shop = appData.settings.shopName;
+  const days = getDaysSince(c.lastVisit);
+  const stars = c.stars || 0;
+  const remaining = getRemaining(stars, appData.settings.visitsForFree);
+
+  let msg = 'Assalam-o-Alaikum ' + c.name + '!\n\n' +
+    '*Shukriya* ke aapne *Kataf Atta Chakki* ka intekhaab kiya! 🙏\n\n' +
+    'Aapko atta piswaye hue *' + days + ' din* ho gaye hain.\n' +
+    'Ham aapke intezar mein hain! 🌾\n\n';
+
+  if(stars > 0) {
+    msg += '*Aapka Status:*\n' +
+      '⭐ Stars: ' + stars + '/' + appData.settings.visitsForFree + '\n' +
+      '⏳ *' + remaining + ' visits baqi hain!*\n' +
+      'Bas *' + remaining + ' visit* aur karne hain!\n' +
+      '*1 FREE Pisaai* aapka intezar kar raha hai! 🎁\n\n';
+  }
+
+  msg += 'Aaj hi aayein aur apna hisaab update karein!\n\n' +
+    '*Kataf Atta Chakki*\n' +
+    'Aapka bharosa, hamari pehchaan!';
+  window.open(getWhatsAppLink(c.phone, msg), '_blank');
+}
+
+function sendWhatsAppReceipt() {
+  const c = appData.customers.find(x => x.id === currentCustomerId);
+  if(!c) return;
+  const lastTx = appData.transactions.filter(t => t.customerId === c.id).slice(-1)[0];
+  if(!lastTx) return;
+
+  const shop = appData.settings.shopName;
+  const target = appData.settings.visitsForFree;
+  const remaining = getRemaining(c.stars, target);
+  let msg = '🧾 *' + shop + ' - Receipt*\n\n' +
+    'Customer: *' + c.name + '*\n' +
+    'Date: ' + formatDate(lastTx.timestamp) + '\n' +
+    '-------------------\n';
+
+  if(lastTx.type === 'visit') {
+    msg += '🌾 Ghandham: ' + lastTx.ghandham + 'kg\n' +
+      '🥡 Pisaai: ' + lastTx.pisaai + 'kg\n' +
+      '⭐ Stars: +' + (lastTx.starsAdded || 1) + '\n';
+    if(lastTx.freeEarned) msg += '🎁 FREE Pisaai Earned!\n';
+  } else {
+    msg += '🎁 FREE Pisaai Redeemed\n' +
+      '🌾 Ghandham: ' + lastTx.ghandham + 'kg\n' +
+      '🥡 Pisaai: ' + lastTx.pisaai + 'kg\n' +
+      '💰 Cost: FREE\n';
+  }
+
+  msg += '-------------------\n' +
+    '⭐ Current Stars: ' + c.stars + '/' + target + '\n' +
+    '⏳ ' + remaining + ' visits baqi\n' +
+    '🌾 Total Ghandham: ' + c.totalGhandham + 'kg\n\n' +
+    'Shukriya! 🙏\n' + shop;
+  window.open(getWhatsAppLink(c.phone, msg), '_blank');
+}
+
+function sendOverdueWhatsApp(id) {
+  const c = appData.customers.find(x => x.id === id);
+  if(!c) return;
+  const shop = appData.settings.shopName;
+  const days = getDaysSince(c.lastVisit);
+  const stars = c.stars || 0;
+  const remaining = getRemaining(stars, appData.settings.visitsForFree);
+
+  let msg = 'Assalam-o-Alaikum ' + c.name + '!\n\n' +
+    '*Shukriya* ke aapne *Kataf Atta Chakki* ka intekhaab kiya! 🙏\n\n' +
+    'Aapko atta piswaye hue *' + days + ' din* ho gaye hain.\n' +
+    'Ham aapke intezar mein hain! 🌾\n\n';
+
+  if(stars > 0) {
+    msg += '*Aapka Status:*\n' +
+      '⭐ Stars: ' + stars + '/' + appData.settings.visitsForFree + '\n' +
+      '⏳ *' + remaining + ' visits baqi hain!*\n' +
+      'Bas *' + remaining + ' visit* aur karne hain!\n' +
+      '*1 FREE Pisaai* aapka intezar kar raha hai! 🎁\n\n';
+  }
+
+  msg += 'Aaj hi aayein aur apna hisaab update karein!\n\n' +
+    '*Kataf Atta Chakki*\n' +
+    'Aapka bharosa, hamari pehchaan!';
+  window.open(getWhatsAppLink(c.phone, msg), '_blank');
+}
+
+function sendReminderWhatsApp(id) { sendOverdueWhatsApp(id); }
+
+// ===================== TRANSACTIONS =====================
+function renderAllTransactions() {
+  const trans = [...appData.transactions].reverse();
+  const container = document.getElementById('all-transactions');
+  if(trans.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">📋</div>Koi transaction nahi</div>';
+    return;
+  }
+  container.innerHTML = trans.map(t => {
+    return '<div class="transaction-item ' + (t.type === 'redeem' ? 'redeem' : '') + '">' +
+      '<div><div style="font-weight:700;font-size:14px;">' + t.customerName + '</div>' +
+      '<div class="tx-type">' + (t.type === 'visit' ? '🌾 Visit' : '🎁 Free Pisaai') + '</div>' +
+      '<div class="tx-details">' + t.ghandham + 'kg ghandham → ' + t.pisaai + 'kg pisaai</div>' +
+      '<div class="tx-date">' + formatDate(t.timestamp) + '</div></div>' +
+      '<div style="text-align:right"><div class="tx-amount">' + (t.type === 'visit' ? '⭐ +' + (t.starsAdded || 1) : '🎁 FREE') + '</div>' +
+      (t.freeEarned ? '<div style="font-size:11px;color:var(--success);font-weight:700;">Card Complete!</div>' : '') + '</div></div>';
+  }).join('');
+}
+
+// ===================== SETTINGS =====================
+function loadSettings() {
+  document.getElementById('setting-visits').value = appData.settings.visitsForFree;
+  document.getElementById('setting-shop').value = appData.settings.shopName;
+  document.getElementById('setting-phone').value = appData.settings.shopPhone;
+}
+
+function saveSettings() {
+  const visits = parseInt(document.getElementById('setting-visits').value);
+  const shop = document.getElementById('setting-shop').value.trim();
+  const phone = document.getElementById('setting-phone').value.trim();
+  if(!visits || visits < 1) { showToast('❌ Valid visits number dalen!'); return; }
+  appData.settings.visitsForFree = visits;
+  appData.settings.shopName = shop || 'Kataf Atta Chakki';
+  appData.settings.shopPhone = phone;
+  saveData();
+  showToast('✅ Settings save ho gayi!');
+}
+
+// ===================== EXPORT =====================
+function exportCustomers() {
+  const csv = [
+    ['ID', 'Name', 'Phone', 'Address', 'Stars', 'Total Visits', 'Total Ghandham(kg)', 'Total Pisaai(kg)', 'Free Redeemed', 'Last Visit', 'Days Since'],
+    ...appData.customers.map(c => [
+      c.id, c.name, c.phone, c.address || '', c.stars || 0, c.totalVisits || 0,
+      c.totalGhandham || 0, c.totalPisaai || 0, c.freeRedeemed || 0,
+      c.lastVisit ? formatDate(c.lastVisit) : 'Never', getDaysSince(c.lastVisit)
+    ])
+  ].map(row => row.join(',')).join('\n');
+
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Kataf-Customers-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  showToast('✅ Customers export ho gaye!');
+}
+
+function exportTransactions() {
+  const csv = [
+    ['Date', 'Type', 'Customer', 'Ghandham(kg)', 'Pisaai(kg)', 'Stars', 'Free Earned'],
+    ...appData.transactions.map(t => [
+      formatDate(t.timestamp), t.type, t.customerName,
+      t.ghandham || 0, t.pisaai || 0, t.starsAdded || 0, t.freeEarned ? 'Yes' : 'No'
+    ])
+  ].map(row => row.join(',')).join('\n');
+
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Kataf-Transactions-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  showToast('✅ Transactions export ho gaye!');
+}
+
+// ===================== DELETE =====================
+function deleteCustomer() {
+  if(!confirm('Kya aapko yaqeen hai? Customer aur sari history delete ho jayegi!')) return;
+  appData.customers = appData.customers.filter(c => c.id !== currentCustomerId);
+  appData.transactions = appData.transactions.filter(t => t.customerId !== currentCustomerId);
+  saveData();
+  closeModal('modal-detail');
+  showToast('🗑️ Customer delete ho gaya!');
+  renderCustomers();
+}
+
+function clearAllData() {
+  if(!confirm('⚠️ SAB DATA DELETE HO JAYEGA! Yaqeen hai?')) return;
+  if(!confirm('FINAL CONFIRMATION: Sab kuch delete karna hai?')) return;
+  appData = {
+    customers: [], transactions: [],
+    settings: { visitsForFree: 5, shopName: 'Kataf Atta Chakki', shopPhone: '03001234567' },
+    nextId: 1001
+  };
+  saveData();
+  showToast('🗑️ Sab data delete ho gaya!');
+  renderDashboard();
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+// ===================== INIT =====================
+renderDashboard();
+</script>
+</body>
+</html>
