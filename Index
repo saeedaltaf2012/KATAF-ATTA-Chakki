@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kataf Atta Chakki - تازہ اور صاف ستھرا آٹا</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <h1>🌾 Kataf Atta Chakki</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>تازہ اور صاف ستھرا آٹا</h1>
+            <p>100% خالص گندم سے تیار کردہ | کوئی ملاوٹ نہیں</p>
+            <a href="#contact" class="btn-primary">Order Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>ہمارے بارے میں</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>Kataf Atta Chakki 2012 سے آپ کی خدمت میں حاضر ہے۔ ہمارا مقصد صرف ایک چیز ہے — <strong>خالص اور صاف ستھرا آٹا</strong> جو آپ کے گھر والوں کی صحت کا خیال رکھے۔</p>
+                    <ul>
+                        <li>✅ 100% خالص گندم</li>
+                        <li>✅ جدید مشینری سے تیار</li>
+                        <li>✅ صفائی کا خاص خیال</li>
+                        <li>✅ مناسب قیمت</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <div class="placeholder-img">🌾 Chakki Image</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2>ہمارے مصنوعات</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-icon">🌾</div>
+                    <h3>چکی کا آٹا</h3>
+                    <p>روزمرہ روٹی کے لیے بہترین</p>
+                    <span class="price">Rs. 120/kg</span>
+                </div>
+                <div class="product-card">
+                    <div class="product-icon">🥖</div>
+                    <h3>مایدہ</h3>
+                    <p>میٹھائیوں اور بیکری کے لیے</p>
+                    <span class="price">Rs. 80/kg</span>
+                </div>
+                <div class="product-card">
+                    <div class="product-icon">🌾</div>
+                    <h3>سوجی</h3>
+                    <p>حلوہ اور کھیر کے لیے</p>
+                    <span class="price">Rs. 100/kg</span>
+                </div>
+                <div class="product-card">
+                    <div class="product-icon">🍞</div>
+                    <h3>بریڈ کا آٹا</h3>
+                    <p>نرم اور ہلکا آٹا</p>
+                    <span class="price">Rs. 110/kg</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="process">
+        <div class="container">
+            <h2>ہمارا عمل</h2>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>گندم کا انتخاب</h3>
+                    <p>بہترین کوالٹی کی گندم کا انتخاب</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>صاف ستھرائی</h3>
+                    <p>گندم کو صاف کیا جاتا ہے</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>پیسنا</h3>
+                    <p>جدید مشینری سے پیسا جاتا ہے</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>پیکنگ</h3>
+                    <p>صاف پیکنگ میں تیار</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>رابطہ کریں</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <span class="icon">📍</span>
+                        <p>Main Bazaar, Your City</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="icon">📞</span>
+                        <p>+92 300 1234567</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="icon">⏰</span>
+                        <p>صبح 6 بجے سے شام 10 بجے تک</p>
+                    </div>
+                </div>
+                <form class="contact-form" id="orderForm">
+                    <h3>آرڈر دیں</h3>
+                    <input type="text" placeholder="آپ کا نام" required>
+                    <input type="tel" placeholder="فون نمبر" required>
+                    <select required>
+                        <option value="">مصنوعات منتخب کریں</option>
+                        <option value="atta">چکی کا آٹا</option>
+                        <option value="maida">مایدہ</option>
+                        <option value="suji">سوجی</option>
+                        <option value="bread">بریڈ کا آٹا</option>
+                    </select>
+                    <input type="number" placeholder="مقدار (kg)" min="1" required>
+                    <textarea placeholder="اضافی ہدایات"></textarea>
+                    <button type="submit" class="btn-primary">آرڈر بھیجیں</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Kataf Atta Chakki. جملہ حقوق محفوظ ہیں.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
